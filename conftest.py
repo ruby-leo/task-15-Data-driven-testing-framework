@@ -21,10 +21,10 @@ def config_data():
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
-    rep = outcome.get_result()
-    if rep.when == "call":
+    report = outcome.get_result()
+    if report.when == "call":
         params = item.callspec.params
         row_num = params.get("row_num")
-        test_result = "Passed" if rep.passed else "Failed"
+        test_result = "Passed" if report.passed else "Failed"
         config_data = item._request.getfixturevalue("config_data")
         write_results_back_into_excel(row_num, date.today(), datetime.now().time(), config_data["name_of_the_tester"], test_result)
