@@ -1,5 +1,9 @@
+from datetime import date, datetime
+
 import pytest
 from selenium import webdriver
+
+from utilities.excel_operation import write_results_back_into_excel
 from utilities.read_json import get_config
 
 @pytest.fixture(scope="function")
@@ -13,3 +17,14 @@ def driver(config_data):
 @pytest.fixture(scope="session")
 def config_data():
     return get_config()
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    rep = outcome.get_result()
+    if rep.when == "call":
+        params = item.callspec.params
+        row_num = params.get("row_num")
+        test_result = "Passed" if rep.passed else "Failed"
+        config_data = item._request.getfixturevalue("config_data")
+        write_results_back_into_excel(row_num, date.today(), datetime.now().time(), config_data["name_of_the_tester"], test_result)

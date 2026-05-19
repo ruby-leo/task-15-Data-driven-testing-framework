@@ -8,16 +8,7 @@ class TestLoginFunction:
     @pytest.mark.parametrize("row_num, username, password", get_username_password_from_excel())
     def test_login_with_different_credentials_from_excel(self, driver, row_num, username, password, config_data):
         login_page = LoginPage(driver)
-        test_result = ""
-        try:
-            login_page.enter_username(username)
-            login_page.enter_password(password)
-            login_page.click_login()
-            assert login_page.does_url_contain("/dashboard")
-            test_result = "Passed"
-        except Exception as e:
-            test_result = "Failed"
-            raise e
-        finally:
-            write_results_back_into_excel(row_num, date.today(), datetime.now().time(),
-                                          config_data["name_of_the_tester"], test_result)
+        login_page.enter_username(username)
+        login_page.enter_password(password)
+        login_page.click_login()
+        assert login_page.does_url_contain("/dashboard")
