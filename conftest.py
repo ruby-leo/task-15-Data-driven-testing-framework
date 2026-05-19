@@ -6,6 +6,7 @@ from selenium import webdriver
 from utilities.excel_operation import write_results_back_into_excel
 from utilities.read_json import get_config
 
+# Initializes, maximizes, and navigates the Chrome WebDriver before each test, then closes it after the test finishes.
 @pytest.fixture(scope="function")
 def driver(config_data):
     driver = webdriver.Chrome()
@@ -14,10 +15,12 @@ def driver(config_data):
     yield driver
     driver.quit()
 
+# Loads the global configuration details from the JSON file once per test execution session.
 @pytest.fixture(scope="session")
 def config_data():
     return get_config()
 
+# Intercepts the test execution result to automatically log the pass/fail status and metadata back into the Excel sheet.
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     outcome = yield
