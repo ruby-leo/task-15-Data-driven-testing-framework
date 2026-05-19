@@ -1,10 +1,8 @@
-from datetime import date, datetime
-
 import pytest
 from selenium import webdriver
-
 from utilities.excel_operation import write_results_back_into_excel
 from utilities.read_json import get_config
+from datetime import date, datetime
 
 # Initializes, maximizes, and navigates the Chrome WebDriver before each test, then closes it after the test finishes.
 @pytest.fixture(scope="function")
