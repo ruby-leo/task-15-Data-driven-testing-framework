@@ -8,6 +8,7 @@ from datetime import date, datetime
 @pytest.fixture(scope="function")
 def driver(config_data):
     driver = webdriver.Chrome()
+    driver.explicit_wait = config_data["explicit_wait"]
     driver.maximize_window()
     driver.get(config_data["base_url"])
     yield driver
